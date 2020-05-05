@@ -1,7 +1,7 @@
-import React, { FunctionComponent } from 'react';
+import React, { FunctionComponent, useState } from 'react';
 import PlayerRound from './PlayerRound';
-import NumberDictionary from './NumberDictionary';
 import RoundInfo from './RoundInfo';
+import RoundModes from './RoundModes';
 //import './Round.css';
 
 interface RoundProps {
@@ -9,26 +9,25 @@ interface RoundProps {
   players: string[];
   scoreInfo: RoundInfo;
   prevRoundScores: RoundInfo;
+  currentRound: number;
+  roundCompleteAction: () => void;
 }
 
-let calculatePlayerScoreForRound = (cardsInRound: number, tricksBid: number, tricksWon: number, bonusPoints: number) => {
-  if (tricksBid === 0 && tricksWon === 0) {
-    return 10 * cardsInRound;
-  }
-  if (tricksBid !== tricksWon) {
-    return -Math.abs(tricksBid - tricksWon) * 10;
-  }
-  return tricksWon * 20 + bonusPoints;
-}
-
-const Round: FunctionComponent<RoundProps> = ( {cardCount, players, scoreInfo, prevRoundScores} ) => {
+const Round: FunctionComponent<RoundProps> = ( {cardCount, players, scoreInfo, prevRoundScores,
+  currentRound, roundCompleteAction } ) => {
+  const [roundMode, setRoundMode] = useState(currentRound < cardCount ?
+    RoundModes.NotYet : (currentRound === cardCount ? RoundModes.Bidding : RoundModes.Completed));
 
   return (
     <tr className="Round">
        <td key='cardCount'>{cardCount}</td>
        {players.map(p => 
-       <PlayerRound cardCount={cardCount} prevRoundScore={0}></PlayerRound>
+       <PlayerRound cardCount={cardCount} prevRoundScore={0} roundMode={roundMode} player={p}></PlayerRound>
        )}
+       { roundMode === RoundModes.Bidding &&
+       <button onClick={ () => {setRoundMode(RoundModes.Playing)}}>Start Round</button>}
+       { roundMode === RoundModes.Playing &&
+       <button onClick={() => { roundCompleteAction()}}>Round done</button>}
     </tr>
   );
 }
