@@ -9,12 +9,10 @@ interface SheetProps {
 }
 const Sheet: FunctionComponent<SheetProps> = ({players}) => {
   let [scoreInfo] = useState([] as RoundInfo[]);  
-  let [currentRound, setCurrentRound] = useState(4);
+  let [currentRound, setCurrentRound] = useState(1);
 
   let nextRound = () => {
-    console.log('next');
     setCurrentRound(currentRound+1);
-    console.log(currentRound);
   }
   return (
     <table>

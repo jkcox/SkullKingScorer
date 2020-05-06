@@ -7,6 +7,7 @@ interface PlayerRoundProps {
   prevRoundScore: number;
   roundMode: RoundModes;
   player: string;
+  recordBid: (player: string, bid: number) => void;
 }
 
 let calculatePlayerScoreForRound = (cardsInRound: number, tricksBid: number, tricksWon: number, bonusPoints: number) => {
@@ -19,22 +20,24 @@ let calculatePlayerScoreForRound = (cardsInRound: number, tricksBid: number, tri
   return tricksWon * 20 + bonusPoints;
 }
 
-// Modes: notReached, bidding, Playing, Completed
-
-const PlayerRound: FunctionComponent<PlayerRoundProps> = ( {cardCount, prevRoundScore, roundMode, player } ) => {
-  let bids: number = 0;
+const PlayerRound: FunctionComponent<PlayerRoundProps> = ( {cardCount, prevRoundScore, roundMode, player, recordBid } ) => {
+  let [bids, setBids] = useState(0);
   let [tricks, setTricks] = useState(0);
   let bonus: number = 0;
   let trickNums = [...Array(cardCount + 1).keys()];
 
+  let recordPlayerBid = (bid: number) => {
+    setBids(bid);
+    recordBid(player, bid);
+  }
   return (
     <td className='PlayerRound'>
     {roundMode === RoundModes.Bidding && 
     <div>
       {trickNums.map(n => 
-      <>
-        <input type='radio' name={player} id={player} value={n}/>
-        <label htmlFor={'bid' + n}>{n}</label>
+      <>&nbsp;
+        <input type='radio' name={player} id={player+n} value={n} onClick={() => {recordPlayerBid(n)}}/>
+        <label htmlFor={player + n}>{n}</label>&nbsp;
         </>
       )}
     </div>}
