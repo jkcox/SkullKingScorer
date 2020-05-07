@@ -49,17 +49,33 @@ const Round: FunctionComponent<RoundProps> = ( {cardCount, players, prevRoundSco
       RoundModes.NotYet : (currentRound === cardCount ? RoundModes.Bidding : RoundModes.Completed));
   }, [cardCount, currentRound]);
 
+  let [tricksPlayedCount, setTricksPlayedCount] = useState(0);
+  let addToTrickCount = () => {
+    setTricksPlayedCount(tricksPlayedCount + 1);
+  }
+
+  let [krakenPlayed, setKrakenPlayed] = useState(false);
+  let recordKrakenPlayed = () => {
+    setKrakenPlayed(true);
+    addToTrickCount();
+  }
+
   return (
     <tr className="Round">
-       <td key='cardCount'>{cardCount}{cardCount === currentRound && '*'}</td>
+       <td key='cardCount'>{cardCount}</td>
        {players.map(p => 
-       <PlayerRound key={p} cardCount={cardCount} prevRoundScore={prevRoundScores && prevRoundScores[p] ? prevRoundScores[p] : 0}
+       <PlayerRound key={p} cardCount={cardCount} trickPlayedAction={addToTrickCount} tricksPlayed={tricksPlayedCount}
+        prevRoundScore={prevRoundScores && prevRoundScores[p] ? prevRoundScores[p] : 0}
         roundMode={roundMode} player={p} recordBid={recordBid} recordScore={recordPlayerScore}></PlayerRound>
        )}
-       { roundMode === RoundModes.Bidding && bidsComplete &&
-       <button onClick={ () => {startRound()}}>Start Round</button>}
-       { roundMode === RoundModes.Playing &&
-       <button onClick={() => { roundComplete()}}>Round done</button>}
+       <td style={{width: 50, border: 'none'}}>
+        { roundMode === RoundModes.Bidding && bidsComplete &&
+        <button onClick={ () => {startRound()}}>Start Round</button>}
+        { roundMode === RoundModes.Playing && tricksPlayedCount < cardCount && !krakenPlayed &&
+        <button onClick={() => { recordKrakenPlayed()}}>Kraken Played</button>}
+        { roundMode === RoundModes.Playing && tricksPlayedCount === cardCount &&
+        <button onClick={() => { roundComplete()}}>Round done</button>}
+       </td>
     </tr>
   );
 }
