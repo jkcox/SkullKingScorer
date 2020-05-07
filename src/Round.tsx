@@ -1,6 +1,5 @@
 import React, { FunctionComponent, useState, useEffect } from 'react';
 import PlayerRound from './PlayerRound';
-import RoundInfo from './RoundInfo';
 import RoundModes from './RoundModes';
 import NumberDictionary from './NumberDictionary';
 //import './Round.css';
@@ -8,20 +7,19 @@ import NumberDictionary from './NumberDictionary';
 interface RoundProps {
   cardCount: number;
   players: string[];
-  scoreInfo: RoundInfo;
-  prevRoundScores: RoundInfo;
+  prevRoundScores: NumberDictionary | null;
   currentRound: number;
-  roundCompleteAction: () => void;
+  roundCompleteAction: (scores: NumberDictionary) => void;
 }
 
-const Round: FunctionComponent<RoundProps> = ( {cardCount, players, scoreInfo, prevRoundScores,
+const Round: FunctionComponent<RoundProps> = ( {cardCount, players, prevRoundScores,
   currentRound, roundCompleteAction } ) => {
   const [roundMode, setRoundMode] = useState(currentRound < cardCount ?
     RoundModes.NotYet : (currentRound === cardCount ? RoundModes.Bidding : RoundModes.Completed));
 
   let roundComplete = () => {
     setRoundMode(RoundModes.Completed);
-    roundCompleteAction();
+    roundCompleteAction(scores);
   }
   let startRound = () => {
     setRoundMode(RoundModes.Playing);
@@ -40,6 +38,12 @@ const Round: FunctionComponent<RoundProps> = ( {cardCount, players, scoreInfo, p
   }
   let [bidsComplete, setBidsComplete] = useState(false);
   
+  let [scores, setScores] = useState({} as NumberDictionary);
+  let recordPlayerScore = (player: string, score: number) => {
+    scores[player] = score;
+    setScores(scores);
+  };
+
   useEffect(() => {
     setRoundMode(currentRound < cardCount ?
       RoundModes.NotYet : (currentRound === cardCount ? RoundModes.Bidding : RoundModes.Completed));
@@ -49,7 +53,8 @@ const Round: FunctionComponent<RoundProps> = ( {cardCount, players, scoreInfo, p
     <tr className="Round">
        <td key='cardCount'>{cardCount}{cardCount === currentRound && '*'}</td>
        {players.map(p => 
-       <PlayerRound cardCount={cardCount} prevRoundScore={0} roundMode={roundMode} player={p} recordBid={recordBid}></PlayerRound>
+       <PlayerRound key={p} cardCount={cardCount} prevRoundScore={prevRoundScores && prevRoundScores[p] ? prevRoundScores[p] : 0}
+        roundMode={roundMode} player={p} recordBid={recordBid} recordScore={recordPlayerScore}></PlayerRound>
        )}
        { roundMode === RoundModes.Bidding && bidsComplete &&
        <button onClick={ () => {startRound()}}>Start Round</button>}
