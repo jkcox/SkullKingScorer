@@ -63,7 +63,7 @@ const Round: FunctionComponent<RoundProps> = ( {cardCount, players, prevRoundSco
 
   return (
     <tr className="Round">
-       <td key='cardCount'>{cardCount}</td>
+       <td key='cardCount'>{cardCount}{!bidsComplete && currentRound === cardCount && <div>Enter bids</div>}</td>
        {players.map(p => 
        <PlayerRound key={p} cardCount={cardCount} trickPlayedAction={addToTrickCount} tricksPlayed={tricksPlayedCount}
         prevRoundScore={prevRoundScores && prevRoundScores[p] ? prevRoundScores[p] : 0}

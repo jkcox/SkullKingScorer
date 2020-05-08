@@ -3,7 +3,7 @@ import './App.css';
 import Sheet from './Sheet';
 
 function App() {
-  let [players, setPlayers] = useState([] as string[]);
+  let [players, setPlayers] = useState(['Player 1', 'Player 2', 'Player 3']);
   let [newPlayerName, setNewPlayerName] = useState('');
   let [newPlayerFieldShown, setNewPlayerFieldShown] = useState(false);
   let [gameStarted, setGameStarted] = useState(false);
