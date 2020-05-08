@@ -6,22 +6,34 @@ import NumberDictionary from './NumberDictionary';
 
 interface SheetProps {
   players: string[];
+  deletePlayerAction: (player: string) => void;
+  startGameAction: () => void;
 }
-const Sheet: FunctionComponent<SheetProps> = ({players}) => {
+
+const Sheet: FunctionComponent<SheetProps> = ({players, deletePlayerAction, startGameAction}) => {
   let [currentRound, setCurrentRound] = useState(1);
   let [scores, setScores] = useState([] as NumberDictionary[]);
+
   let nextRound = (roundScores: NumberDictionary) => {
+    if (currentRound === 1) {
+      startGameAction();
+    }
     scores[currentRound] = roundScores;
     setScores(scores);
     setCurrentRound(currentRound+1);
   }
+  
   return (
+    <>
     <table>
       <thead>
         <tr>
         <th>Round</th>
         {
-          players.map(p => <th key={p}>{p}</th>)
+          players.map(p => 
+          <th key={p}>{p} 
+          { currentRound === 1 && <button onClick={() => {deletePlayerAction(p)}}>	&#10007;</button>}
+          </th>)
         }
         </tr>
       </thead>
@@ -33,6 +45,7 @@ const Sheet: FunctionComponent<SheetProps> = ({players}) => {
     }
     </tbody>
     </table>
+    </>
   );
 }
 

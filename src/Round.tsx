@@ -24,7 +24,9 @@ const Round: FunctionComponent<RoundProps> = ( {cardCount, players, prevRoundSco
   let startRound = () => {
     setRoundMode(RoundModes.Playing);
   }
+
   let [bids,setBids] = useState({} as NumberDictionary);
+  let [bidsComplete, setBidsComplete] = useState(false);
   let recordBid = (player: string, bid: number) => {
     bids[player] = bid;
     setBids(bids);
@@ -36,7 +38,6 @@ const Round: FunctionComponent<RoundProps> = ( {cardCount, players, prevRoundSco
     });
     setBidsComplete(allBidsIn);
   }
-  let [bidsComplete, setBidsComplete] = useState(false);
   
   let [scores, setScores] = useState({} as NumberDictionary);
   let recordPlayerScore = (player: string, score: number) => {
