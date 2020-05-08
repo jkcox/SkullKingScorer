@@ -26,7 +26,7 @@ const PlayerRound: FunctionComponent<PlayerRoundProps> = ( {cardCount, prevRound
   recordScore, trickPlayedAction, tricksPlayed } ) => {
   let [bids, setBids] = useState(0);
   let [tricks, setTricks] = useState(0);
-  let bonus: number = 0;
+  let [bonus, setBonus] = useState(0);
   let trickNums = [...Array(cardCount + 1).keys()];
 
   let recordPlayerBid = (bid: number) => {
@@ -47,6 +47,11 @@ const PlayerRound: FunctionComponent<PlayerRoundProps> = ( {cardCount, prevRound
     setTricks(tricks + 1);
     trickPlayedAction();
   }
+
+  let bonusEntered = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setBonus(Number(event.target.value));
+  }
+
   return (
     <td className='PlayerRound' style={{width: 160}} key={player}>
     {roundMode === RoundModes.Bidding && 
@@ -60,16 +65,17 @@ const PlayerRound: FunctionComponent<PlayerRoundProps> = ( {cardCount, prevRound
     </div>}
     { (roundMode === RoundModes.Completed || roundMode === RoundModes.Playing) &&
         <>
-        <span>B: {bids} </span>
-        <span>W: {tricks} </span>
+        <span>Bid: {bids} </span>
+        <span>Won: {tricks} </span>
         { roundMode === RoundModes.Playing && tricksPlayed < cardCount &&
-        <button onClick={() => {trickPlayed()}}>Add Trick</button>}
+        <div><button onClick={() => {trickPlayed()}}>Add Trick</button></div>}
         { roundMode === RoundModes.Playing && tricksPlayed === cardCount &&
-        <input placeholder='Bonus' type='number'/>}
+        <div>
+        <input placeholder='Bonus' type='number' style={{width: 44}} onChange={bonusEntered}/></div>}
     </>}
     { roundMode === RoundModes.Completed &&
     <>
-    <span>+: {bonus}</span>
+      { bonus > 0 && <div>Bonus: {bonus}</div>}
     <div>score: {score}</div>
     <div>Total: {score + prevRoundScore}</div>
     </>
