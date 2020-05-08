@@ -41,7 +41,7 @@ const PlayerRound: FunctionComponent<PlayerRoundProps> = ( {cardCount, prevRound
       recordScore(player, score + prevRoundScore);
       setScore(score);
     }
-  }, [roundMode])
+  }, [roundMode, bids, bonus, player, score, prevRoundScore, recordScore, cardCount, tricks])
 
   let trickPlayed = () => {
     setTricks(tricks + 1);

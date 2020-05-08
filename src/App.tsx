@@ -7,9 +7,10 @@ function App() {
 
   return (
     <div className="App">
-      <header className="App-header">
+      <div className="App-body">
+      <h1>Skull King Scoresheet</h1>
         <Sheet players={players}></Sheet>
-      </header>
+      </div>
     </div>
   );
 }

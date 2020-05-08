@@ -2,8 +2,10 @@
   text-align: center;
 }
 
-.App-header {
-  background-color: #282c34;
+.App-body {
+  background-color: #4b74c4;
+  background-image: url('http://1.bp.blogspot.com/-oi_NdSsCyuE/T-H50q-_qfI/AAAAAAAAEHk/w22p0h6PGfU/s1600/pirate+(2).jpg');
+  opacity: 0.8;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -15,13 +17,4 @@
 
 .App-link {
   color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
 }
