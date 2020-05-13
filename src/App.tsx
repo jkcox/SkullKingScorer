@@ -27,7 +27,7 @@ function App() {
   return (
     <div className="App">
       <div className="App-body">
-      <h1>Skull King Scoresheet</h1>
+      <h1>Ye New Skull King Scoresheet</h1>
         { !newPlayerFieldShown && !gameStarted &&
         <button onClick={() => {setNewPlayerFieldShown(true)}}>Add player</button>}
         { newPlayerFieldShown && <>
