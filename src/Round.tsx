@@ -27,18 +27,23 @@ const Round: FunctionComponent<RoundProps> = ( {cardCount, players, prevRoundSco
 
   let [bids,setBids] = useState({} as NumberDictionary);
   let [bidsComplete, setBidsComplete] = useState(false);
+  let [totalTricksBid, setTotalTricksBid] = useState(0);
   let recordBid = (player: string, bid: number) => {
     bids[player] = bid;
     setBids(bids);
     let allBidsIn = true;
+    let totalOfBids = 0;
     players.forEach(p => {
       if (bids[p] === undefined) {
         allBidsIn = false;
+      } else {
+        totalOfBids += bids[p];
       }
     });
     setBidsComplete(allBidsIn);
+    setTotalTricksBid(totalOfBids);
   }
-  
+
   let [scores, setScores] = useState({} as NumberDictionary);
   let recordPlayerScore = (player: string, score: number) => {
     scores[player] = score;
@@ -71,9 +76,19 @@ const Round: FunctionComponent<RoundProps> = ( {cardCount, players, prevRoundSco
        )}
        <td style={{width: 50, border: 'none'}}>
         { roundMode === RoundModes.Bidding && bidsComplete &&
-        <button onClick={ () => {startRound()}}>Start Round</button>}
+        <>
+        <button onClick={ () => {startRound()}}>Start Round</button>
+        <div style={{width: 100}}>
+        { totalTricksBid === cardCount ? 'Bids at par' :
+          (totalTricksBid < cardCount ? 'Bids ' + (cardCount - totalTricksBid) + ' under'
+          : 'Bids ' + (totalTricksBid - cardCount) + ' over')
+        }
+        </div>
+        </>
+        }
         { roundMode === RoundModes.Playing && tricksPlayedCount < cardCount && !krakenPlayed &&
         <button onClick={() => { recordKrakenPlayed()}}>Kraken Played</button>}
+
         { roundMode === RoundModes.Playing && tricksPlayedCount === cardCount &&
         <button onClick={() => { roundComplete()}}>Round done</button>}
        </td>
