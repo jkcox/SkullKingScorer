@@ -37,7 +37,7 @@ function App() {
         <Sheet players={players} deletePlayerAction={deletePlayer} startGameAction={startGame}></Sheet>
         <br/>
         <div style={{fontSize: 11}}>
-        Copyright (c) 2020 Craig Fisher <br/>
+        Copyright (c) 2020 Craig Fisher <a href="https://twitter.com/craigfis">@craigfis</a><br/>
         <a href="https://github.com/Craigfis/SkullKingScorer">https://github.com/Craigfis/SkullKingScorer</a>
         </div>
       </div>
