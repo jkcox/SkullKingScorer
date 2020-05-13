@@ -1,9 +1,9 @@
 .App {
   text-align: center;
+  background-color: #4b74c4;
 }
 
 .App-body {
-  background-color: #4b74c4;
   background-image: url('http://1.bp.blogspot.com/-oi_NdSsCyuE/T-H50q-_qfI/AAAAAAAAEHk/w22p0h6PGfU/s1600/pirate+(2).jpg');
   opacity: 0.8;
   min-height: 100vh;
@@ -15,6 +15,6 @@
   color: white;
 }
 
-.App-link {
+a {
   color: #61dafb;
 }
