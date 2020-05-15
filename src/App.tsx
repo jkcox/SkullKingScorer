@@ -3,7 +3,12 @@ import './App.css';
 import Sheet from './Sheet';
 
 function App() {
-  let [players, setPlayers] = useState(['Player 1', 'Player 2', 'Player 3']);
+  let previousPlayersJson = localStorage.getItem('players');
+  let initialPlayers = ['Player 1', 'Player 2', 'Player 3'];
+  if (previousPlayersJson) {
+    initialPlayers = JSON.parse(previousPlayersJson);
+  }
+  let [players, setPlayers] = useState(initialPlayers);
   let [newPlayerName, setNewPlayerName] = useState('');
   let [newPlayerFieldShown, setNewPlayerFieldShown] = useState(false);
   let [gameStarted, setGameStarted] = useState(false);
@@ -16,9 +21,11 @@ function App() {
     players.push(newPlayerName);
     setPlayers(players);
     setNewPlayerFieldShown(false);
+    localStorage.setItem('players', JSON.stringify(players));
   }
   let deletePlayer = (player: string) => {
     setPlayers(players.filter(p => p !== player));
+    localStorage.setItem('players', JSON.stringify(players.filter(p => p !== player)));
   }
   let startGame = () => {
     setGameStarted(true);
