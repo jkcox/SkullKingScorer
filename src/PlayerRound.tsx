@@ -76,7 +76,7 @@ const PlayerRound: FunctionComponent<PlayerRoundProps> = ( {cardCount, prevRound
     { roundMode === RoundModes.Completed &&
     <>
       { bonus > 0 && <div>Bonus: {bonus}</div>}
-    <div>score: {score}</div>
+    <div>Score: {score}</div>
     <div>Total: {score + prevRoundScore}</div>
     </>
     }
