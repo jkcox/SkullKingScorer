@@ -11,6 +11,7 @@ interface PlayerRoundProps {
   recordScore: (player: string, score: number) => void;
   trickPlayedAction: () => void;
   tricksPlayed: number;
+  winning: boolean;
 }
 
 let calculatePlayerScoreForRound = (cardsInRound: number, tricksBid: number, tricksWon: number, bonusPoints: number) => {
@@ -22,8 +23,8 @@ let calculatePlayerScoreForRound = (cardsInRound: number, tricksBid: number, tri
   }
   return tricksWon * 20 + bonusPoints;
 }
-const PlayerRound: FunctionComponent<PlayerRoundProps> = ( {cardCount, prevRoundScore, roundMode, player, recordBid,
-  recordScore, trickPlayedAction, tricksPlayed } ) => {
+const PlayerRound: FunctionComponent<PlayerRoundProps> = ( {cardCount, prevRoundScore, roundMode, player,
+  recordBid, recordScore, trickPlayedAction, tricksPlayed, winning } ) => {
   let [bids, setBids] = useState(0);
   let [tricks, setTricks] = useState(0);
   let [bonus, setBonus] = useState(0);
@@ -53,7 +54,7 @@ const PlayerRound: FunctionComponent<PlayerRoundProps> = ( {cardCount, prevRound
   }
 
   return (
-    <td className='PlayerRound' style={{width: 160}} key={player}>
+    <td className='PlayerRound' style={{width: 160, backgroundColor: winning ? 'gold' : ''}} key={player+cardCount}>
     {roundMode === RoundModes.Bidding && 
     <div>
       {trickNums.map(n => 

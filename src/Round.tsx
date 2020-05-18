@@ -10,10 +10,11 @@ interface RoundProps {
   prevRoundScores: NumberDictionary | null;
   currentRound: number;
   roundCompleteAction: (scores: NumberDictionary) => void;
+  winningPlayers: string[];
 }
 
 const Round: FunctionComponent<RoundProps> = ( {cardCount, players, prevRoundScores,
-  currentRound, roundCompleteAction } ) => {
+  currentRound, roundCompleteAction, winningPlayers } ) => {
   const [roundMode, setRoundMode] = useState(currentRound < cardCount ?
     RoundModes.NotYet : (currentRound === cardCount ? RoundModes.Bidding : RoundModes.Completed));
 
@@ -70,9 +71,10 @@ const Round: FunctionComponent<RoundProps> = ( {cardCount, players, prevRoundSco
     <tr className="Round">
        <td key='cardCount'>{cardCount}{!bidsComplete && currentRound === cardCount && <div>Enter bids</div>}</td>
        {players.map(p => 
-       <PlayerRound key={p} cardCount={cardCount} trickPlayedAction={addToTrickCount} tricksPlayed={tricksPlayedCount}
+       <PlayerRound key={p+cardCount} cardCount={cardCount} trickPlayedAction={addToTrickCount} tricksPlayed={tricksPlayedCount}
         prevRoundScore={prevRoundScores && prevRoundScores[p] ? prevRoundScores[p] : 0}
-        roundMode={roundMode} player={p} recordBid={recordBid} recordScore={recordPlayerScore}></PlayerRound>
+        roundMode={roundMode} player={p} recordBid={recordBid} recordScore={recordPlayerScore}
+        winning={winningPlayers.includes(p) && cardCount === currentRound - 1}></PlayerRound>
        )}
        <td style={{width: 50, border: 'none'}}>
         { roundMode === RoundModes.Bidding && bidsComplete &&
