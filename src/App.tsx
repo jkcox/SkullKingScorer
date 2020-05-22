@@ -46,6 +46,8 @@ function App() {
         <div style={{fontSize: 11}}>
         © 2020 Craig Fisher <a href="https://twitter.com/craigfis">@craigfis</a><br/>
         <a href="https://github.com/Craigfis/SkullKingScorer">https://github.com/Craigfis/SkullKingScorer</a>
+        <br/>
+        <a href="https://www.grandpabecksgames.com/products-skull-king">What is Skull King?</a>
         </div>
       </div>
     </div>

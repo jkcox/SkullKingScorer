@@ -24,6 +24,18 @@ const Sheet: FunctionComponent<SheetProps> = ({players, deletePlayerAction, star
     setCurrentRound(currentRound+1);
   }
 
+  let [startingPlayerNum, setStartingPlayerNum] = useState(0);
+  const selectStartingPlayer = (p: string): void => {
+    if (currentRound === 1) {
+      let playerNumber = 0;
+      let playerpos: NumberDictionary = {};
+      players.map(p => {
+        playerpos[p] = playerNumber++;
+      })
+      setStartingPlayerNum(playerpos[p]);
+    }
+  };
+
   useEffect(() => {
     let highestScore = 0;
     if (currentRound > 1) {
@@ -38,7 +50,8 @@ const Sheet: FunctionComponent<SheetProps> = ({players, deletePlayerAction, star
       }
       setWinningPlayers(winningPlayers);
     }
-  }, [scores, currentRound])
+  }, [scores, currentRound]);
+
   return (
     <>
     <table>
@@ -47,7 +60,7 @@ const Sheet: FunctionComponent<SheetProps> = ({players, deletePlayerAction, star
         <th>Round</th>
         {
           players.map(p => 
-          <th key={p}>{p}&nbsp; 
+          <th key={p} title={currentRound === 1 ?'Click here to make this the starting player':''} onClick={() => selectStartingPlayer(p)}>{p}&nbsp; 
           { currentRound === 1 && <button onClick={() => {deletePlayerAction(p)}}>	&#10007;</button>}
           </th>)
         }
@@ -56,7 +69,8 @@ const Sheet: FunctionComponent<SheetProps> = ({players, deletePlayerAction, star
       <tbody>
     { [1,2,3,4,5,6,7,8,9,10].map(n =>
          <Round key={n} cardCount={n} players={players} prevRoundScores={n > 1 ? scores[n-1] : null}
-          currentRound={currentRound} roundCompleteAction={nextRound} winningPlayers={winningPlayers}/>
+          currentRound={currentRound} roundCompleteAction={nextRound} winningPlayers={winningPlayers}
+          startingPlayer={players[(startingPlayerNum + n-1) % players.length]}/>
       )
     }
     </tbody>
