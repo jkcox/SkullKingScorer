@@ -29,9 +29,9 @@ const Sheet: FunctionComponent<SheetProps> = ({players, deletePlayerAction, star
     if (currentRound === 1) {
       let playerNumber = 0;
       let playerpos: NumberDictionary = {};
-      players.map(p => {
+      players.forEach(p => {
         playerpos[p] = playerNumber++;
-      })
+      });
       setStartingPlayerNum(playerpos[p]);
     }
   };
