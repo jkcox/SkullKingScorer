@@ -17,15 +17,20 @@ interface PlayerRoundProps {
   legendaryExpansionInPlay: boolean;
 }
 
-let calculatePlayerScoreForRound = (cardsInRound: number, tricksBid: number, tricksWon: number, bonusPoints: number) => {
-  if (tricksBid === 0 && tricksWon === 0) {
-    return 10 * cardsInRound;
+const calculatePlayerScoreForRound = (cardsInRound: number, tricksBid: number, tricksWon: number, bonusPoints: number) => {
+  if (tricksBid === 0) {
+    if (tricksWon === 0) {
+      return 10 * cardsInRound;
+    }
+      return -10 * cardsInRound;
   }
+
   if (tricksBid !== tricksWon) {
     return -Math.abs(tricksBid - tricksWon) * 10;
   }
   return tricksWon * 20 + bonusPoints;
 }
+
 const PlayerRound: FunctionComponent<PlayerRoundProps> = ( {cardCount, prevRoundScore, roundMode, player,
   recordBid, recordScore, trickPlayedAction, tricksPlayed, winning, startingPlayer, legendaryExpansionInPlay } ) => {
   let [bid, setBid] = useState(0);
