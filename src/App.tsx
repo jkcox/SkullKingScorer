@@ -12,22 +12,27 @@ function App() {
   let [newPlayerName, setNewPlayerName] = useState('');
   let [newPlayerFieldShown, setNewPlayerFieldShown] = useState(false);
   let [gameStarted, setGameStarted] = useState(false);
+  let [legendaryExpansionInPlay, setLegendaryExpansionInPlay] = useState(localStorage.getItem('legendaryExpansionInPlay') === 'true');
 
-  let newPlayerNameChanged = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const newPlayerNameChanged = (event: React.ChangeEvent<HTMLInputElement>) => {
     setNewPlayerName(event.target.value);
   }
 
-  let addPlayer = () => {
+  const addPlayer = () => {
     players.push(newPlayerName);
     setPlayers(players);
     setNewPlayerFieldShown(false);
     localStorage.setItem('players', JSON.stringify(players));
   }
-  let deletePlayer = (player: string) => {
+  const deletePlayer = (player: string) => {
     setPlayers(players.filter(p => p !== player));
     localStorage.setItem('players', JSON.stringify(players.filter(p => p !== player)));
   }
-  let startGame = () => {
+  const legendaryExpansionInPlayChanged = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    setLegendaryExpansionInPlay(!legendaryExpansionInPlay);
+    localStorage.setItem('legendaryExpansionInPlay', String(!legendaryExpansionInPlay));
+  };
+  const startGame = () => {
     setGameStarted(true);
   }
 
@@ -36,12 +41,19 @@ function App() {
       <div className="App-body">
       <h1>Ye New Skull King Scoresheet</h1>
         { !newPlayerFieldShown && !gameStarted &&
-        <button onClick={() => {setNewPlayerFieldShown(true)}}>Add player</button>}
+          <div>
+            <input id='legendary_expansion_cb' type='checkbox' checked={legendaryExpansionInPlay}
+             onChange={legendaryExpansionInPlayChanged}/>
+             <label htmlFor={'legendary_expansion_cb'}>Use Legendary Expansion</label>
+            <button onClick={() => {setNewPlayerFieldShown(true)}}>Add player</button>
+          </div>
+        }
         { newPlayerFieldShown && <>
           <input type='text' placeholder='name' onChange={newPlayerNameChanged}></input>
           <button onClick={addPlayer}>OK</button>
-          </>}
-        <Sheet players={players} deletePlayerAction={deletePlayer} startGameAction={startGame}></Sheet>
+          </>
+        }
+        <Sheet players={players} deletePlayerAction={deletePlayer} startGameAction={startGame} legendaryExpansionInPlay={legendaryExpansionInPlay}></Sheet>
         <br/>
         <div style={{fontSize: 11}}>
         © 2020 Craig Fisher <a href="https://twitter.com/craigfis">@craigfis</a><br/>

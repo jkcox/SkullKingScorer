@@ -2,15 +2,18 @@ import React, { FunctionComponent, useState, useEffect } from 'react';
 import Round from './Round';
 import './Sheet.css';
 import NumberDictionary from './NumberDictionary';
-
+import ReactGA from 'react-ga';
 
 interface SheetProps {
   players: string[];
   deletePlayerAction: (player: string) => void;
   startGameAction: () => void;
+  legendaryExpansionInPlay: boolean;
 }
 
-const Sheet: FunctionComponent<SheetProps> = ({players, deletePlayerAction, startGameAction}) => {
+ReactGA.initialize('UA-166808776-1');
+
+const Sheet: FunctionComponent<SheetProps> = ({players, deletePlayerAction, startGameAction, legendaryExpansionInPlay}) => {
   let [currentRound, setCurrentRound] = useState(1);
   let [scores, setScores] = useState([] as NumberDictionary[]);
   let [winningPlayers, setWinningPlayers] = useState([] as string[]);
@@ -21,7 +24,15 @@ const Sheet: FunctionComponent<SheetProps> = ({players, deletePlayerAction, star
     }
     scores[currentRound] = roundScores;
     setScores(scores);
-    setCurrentRound(currentRound+1);
+    if (currentRound === 10) {
+      ReactGA.event({
+        'action': 'game_completed', 
+        'category': 'game_activity',
+        'label': 'Winners: ' + winningPlayers + ' Score: ' + scores[currentRound][winningPlayers[0]],
+      });
+    } else {
+      setCurrentRound(currentRound+1);
+    }
   }
 
   let [startingPlayerNum, setStartingPlayerNum] = useState(0);
@@ -61,7 +72,7 @@ const Sheet: FunctionComponent<SheetProps> = ({players, deletePlayerAction, star
         {
           players.map(p => 
           <th key={p} title={currentRound === 1 ?'Click here to make this the starting player':''} onClick={() => selectStartingPlayer(p)}>{p}&nbsp; 
-          { currentRound === 1 && <button onClick={() => {deletePlayerAction(p)}}>	&#10007;</button>}
+          { currentRound === 1 && <button onClick={() => {deletePlayerAction(p)}}>&#10007;</button>}
           </th>)
         }
         </tr>
@@ -70,7 +81,7 @@ const Sheet: FunctionComponent<SheetProps> = ({players, deletePlayerAction, star
     { [1,2,3,4,5,6,7,8,9,10].map(n =>
          <Round key={n} cardCount={n} players={players} prevRoundScores={n > 1 ? scores[n-1] : null}
           currentRound={currentRound} roundCompleteAction={nextRound} winningPlayers={winningPlayers}
-          startingPlayer={players[(startingPlayerNum + n-1) % players.length]}/>
+          startingPlayer={players[(startingPlayerNum + n-1) % players.length]} legendaryExpansionInPlay={legendaryExpansionInPlay}/>
       )
     }
     </tbody>

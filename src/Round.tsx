@@ -2,6 +2,7 @@ import React, { FunctionComponent, useState, useEffect } from 'react';
 import PlayerRound from './PlayerRound';
 import RoundModes from './RoundModes';
 import NumberDictionary from './NumberDictionary';
+import ReactGA from 'react-ga';
 //import './Round.css';
 
 interface RoundProps {
@@ -12,10 +13,13 @@ interface RoundProps {
   roundCompleteAction: (scores: NumberDictionary) => void;
   winningPlayers: string[];
   startingPlayer: string;
+  legendaryExpansionInPlay: boolean;
 }
 
+ReactGA.initialize('UA-166808776-1');
+
 const Round: FunctionComponent<RoundProps> = ( {cardCount, players, prevRoundScores,
-  currentRound, roundCompleteAction, winningPlayers, startingPlayer } ) => {
+  currentRound, roundCompleteAction, winningPlayers, startingPlayer, legendaryExpansionInPlay } ) => {
   const [roundMode, setRoundMode] = useState(currentRound < cardCount ?
     RoundModes.NotYet : (currentRound === cardCount ? RoundModes.Bidding : RoundModes.Completed));
 
@@ -25,6 +29,13 @@ const Round: FunctionComponent<RoundProps> = ( {cardCount, players, prevRoundSco
   }
   let startRound = () => {
     setRoundMode(RoundModes.Playing);
+    if (currentRound === 1) {
+      ReactGA.event({
+        'action': 'game_started', 
+        'category': 'game_activity',
+        'label': 'Players: ' + players,
+      });
+    }
   }
 
   let [bids,setBids] = useState({} as NumberDictionary);
@@ -77,6 +88,7 @@ const Round: FunctionComponent<RoundProps> = ( {cardCount, players, prevRoundSco
         prevRoundScore={prevRoundScores && prevRoundScores[p] ? prevRoundScores[p] : 0}
         roundMode={roundMode} player={p} recordBid={recordBid} recordScore={recordPlayerScore}
         winning={winningPlayers.includes(p) && cardCount === currentRound - 1} startingPlayer={startingPlayer === p}
+        legendaryExpansionInPlay={legendaryExpansionInPlay}
         />
        )}
 
@@ -92,11 +104,13 @@ const Round: FunctionComponent<RoundProps> = ( {cardCount, players, prevRoundSco
         </div>
         </>
         }
-        { roundMode === RoundModes.Playing && tricksPlayedCount < cardCount && !krakenPlayed &&
-        <button onClick={() => { recordKrakenPlayed()}}>Kraken Played</button>}
+        { roundMode === RoundModes.Playing && tricksPlayedCount < cardCount && !krakenPlayed && legendaryExpansionInPlay &&
+          <button onClick={() => { recordKrakenPlayed()}}>Kraken Played</button>
+        }
 
         { roundMode === RoundModes.Playing && tricksPlayedCount === cardCount &&
-        <button onClick={() => { roundComplete()}}>Round done</button>}
+          <button onClick={() => { roundComplete()}}>Round done</button>
+        }
        </td>
     </tr>
   );

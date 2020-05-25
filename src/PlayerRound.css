@@ -1,0 +1,27 @@
+.dropdownbutton {
+    border: none;
+
+}
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    width: 140px;
+    background: white;
+    color: black;
+}
+
+.dropdown-option {
+    border-style: ridge;
+    cursor: default;
+}
+.dropdown-option:hover {
+    border-style: solid;
+}
+
+.dropdown:hover .dropdown-content { display: block;}

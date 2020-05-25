@@ -1,7 +1,7 @@
 import React, { FunctionComponent, useState, useEffect } from 'react';
 import RoundModes from './RoundModes';
 
-//import './PlayerRound.css';
+import './PlayerRound.css';
 
 interface PlayerRoundProps {
   cardCount: number;
@@ -14,6 +14,7 @@ interface PlayerRoundProps {
   tricksPlayed: number;
   winning: boolean;
   startingPlayer: boolean;
+  legendaryExpansionInPlay: boolean;
 }
 
 let calculatePlayerScoreForRound = (cardsInRound: number, tricksBid: number, tricksWon: number, bonusPoints: number) => {
@@ -26,34 +27,39 @@ let calculatePlayerScoreForRound = (cardsInRound: number, tricksBid: number, tri
   return tricksWon * 20 + bonusPoints;
 }
 const PlayerRound: FunctionComponent<PlayerRoundProps> = ( {cardCount, prevRoundScore, roundMode, player,
-  recordBid, recordScore, trickPlayedAction, tricksPlayed, winning, startingPlayer } ) => {
-  let [bids, setBids] = useState(0);
+  recordBid, recordScore, trickPlayedAction, tricksPlayed, winning, startingPlayer, legendaryExpansionInPlay } ) => {
+  let [bid, setBid] = useState(0);
   let [tricks, setTricks] = useState(0);
   let [bonus, setBonus] = useState(0);
   let trickNums = [...Array(cardCount + 1).keys()];
 
-  let recordPlayerBid = (bid: number) => {
-    setBids(bid);
-    recordBid(player, bid);
-  }
+  const recordPlayerBid = (newbid: number): void => {
+    setBid(newbid);
+    recordBid(player, newbid);
+  };
 
   let [score, setScore] = useState(0);
   useEffect(() => {
     if (roundMode === RoundModes.Completed) {
-      let score = calculatePlayerScoreForRound(cardCount, bids, tricks, bonus);
+      let score = calculatePlayerScoreForRound(cardCount, bid, tricks, bonus);
       recordScore(player, score + prevRoundScore);
       setScore(score);
     }
-  }, [roundMode, bids, bonus, player, score, prevRoundScore, recordScore, cardCount, tricks])
+  }, [roundMode, bid, bonus, player, score, prevRoundScore, recordScore, cardCount, tricks]);
 
-  let trickPlayed = () => {
+  const trickPlayed = (): void => {
     setTricks(tricks + 1);
     trickPlayedAction();
-  }
+  };
 
-  let bonusEntered = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const bonusEntered = (event: React.ChangeEvent<HTMLInputElement>): void => {
     setBonus(Number(event.target.value));
-  }
+  };
+
+  const adjustBid = (bidChange: number): void => {
+    setBid(Math.max(0,Math.min(bid + bidChange, cardCount)));
+  };
+
   let backgroundColor =  winning ? 'rgba(255,215,0,0.6)'
     : ((startingPlayer && roundMode === RoundModes.Bidding) ? 'rgba(25,25,200,0.6)' : '');
   return (
@@ -69,13 +75,32 @@ const PlayerRound: FunctionComponent<PlayerRoundProps> = ( {cardCount, prevRound
     </div>}
     { (roundMode === RoundModes.Completed || roundMode === RoundModes.Playing) &&
         <>
-        <span>Bid: {bids} </span>
+        <span>Bid: {bid} </span>
         <span>Won: {tricks} </span>
-        { roundMode === RoundModes.Playing && tricksPlayed < cardCount &&
-        <div><button onClick={() => {trickPlayed()}}>Add Trick</button></div>}
+        { roundMode === RoundModes.Playing &&
+          <div>
+            { tricksPlayed < cardCount &&
+             <button onClick={() => {trickPlayed()}}>Add Trick</button>
+            }
+            { legendaryExpansionInPlay &&
+            <div className='dropdown'>
+              <button className='dropdownbutton'>
+                <img style={{backgroundColor: 'white'}} alt={'Pirate played'} width={16} src='SkullKingScorer/Skull-And-Crossbones-Remix.svg'/>
+              </button>
+              <div className='dropdown-content'>
+              <div>Use Harry the Giant</div>
+                <div className='dropdown-option' onClick={() => adjustBid(1)}>Raise bid by 1</div>
+                <div className='dropdown-option' onClick={() => adjustBid(-1)}>Lower bid by 1</div>
+              </div>
+            </div>
+            }
+          </div>
+        }
         { roundMode === RoundModes.Playing && tricksPlayed === cardCount &&
-        <div>
-        <input placeholder='Bonus' type='number' style={{width: 44}} onChange={bonusEntered}/></div>}
+          <div>
+            <input placeholder='Bonus' type='number' style={{width: 48}} onChange={bonusEntered}/>
+          </div>
+        }
     </>}
     { roundMode === RoundModes.Completed &&
     <>
