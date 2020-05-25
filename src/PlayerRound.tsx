@@ -72,7 +72,7 @@ const PlayerRound: FunctionComponent<PlayerRoundProps> = ( {cardCount, prevRound
     {roundMode === RoundModes.Bidding && 
     <div title={startingPlayer ? 'Starts round' : ''}>
       {trickNums.map(n => 
-      <>&nbsp;
+      <>
         <input key={player + n} type='radio' name={player} id={player+n} value={n} onClick={() => {recordPlayerBid(n)}}/>
         <label key={player + n + 'L'} htmlFor={player + n}>{n}</label>&nbsp;<br></br>
         </>
@@ -103,7 +103,7 @@ const PlayerRound: FunctionComponent<PlayerRoundProps> = ( {cardCount, prevRound
         }
         { roundMode === RoundModes.Playing && tricksPlayed === cardCount && bid === tricks && bid > 0 &&
           <div>
-            <input placeholder='Bonus' type='number' style={{width: 48}} onChange={bonusEntered}/>
+            <input placeholder='Bonus' type='number' style={{width: 48}} min='0' step='10' onChange={bonusEntered}/>
           </div>
         }
     </>}
