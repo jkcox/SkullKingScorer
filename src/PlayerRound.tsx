@@ -85,7 +85,7 @@ const PlayerRound: FunctionComponent<PlayerRoundProps> = ( {cardCount, prevRound
             { legendaryExpansionInPlay &&
             <div className='dropdown'>
               <button className='dropdownbutton'>
-                <img style={{backgroundColor: 'white'}} alt={'Pirate played'} width={16} src='SkullKingScorer/Skull-And-Crossbones-Remix.svg'/>
+                <img style={{backgroundColor: 'white'}} alt={'Pirate played'} width={16} src={process.env.PUBLIC_URL+'/Skull-And-Crossbones-Remix.svg'}/>
               </button>
               <div className='dropdown-content'>
               <div>Use Harry the Giant</div>

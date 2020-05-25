@@ -43,7 +43,7 @@ function App() {
         { !newPlayerFieldShown && !gameStarted &&
           <div>
             <input id='legendary_expansion_cb' type='checkbox' checked={legendaryExpansionInPlay}
-             onChange={legendaryExpansionInPlayChanged}/>
+             onChange={legendaryExpansionInPlayChanged} title='Adds support for the Kraken and Harry the Giant cards'/>
              <label htmlFor={'legendary_expansion_cb'}>Use Legendary Expansion</label>
             <button onClick={() => {setNewPlayerFieldShown(true)}}>Add player</button>
           </div>
