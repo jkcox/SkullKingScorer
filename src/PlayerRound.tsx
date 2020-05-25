@@ -87,7 +87,7 @@ const PlayerRound: FunctionComponent<PlayerRoundProps> = ( {cardCount, prevRound
             { tricksPlayed < cardCount &&
              <button onClick={() => {trickPlayed()}}>Add Trick</button>
             }
-            { legendaryExpansionInPlay &&
+            { legendaryExpansionInPlay && tricks > 0 &&
             <div className='dropdown'>
               <button className='dropdownbutton'>
                 <img style={{backgroundColor: 'white'}} alt={'Pirate played'} width={16} src={process.env.PUBLIC_URL+'/Skull-And-Crossbones-Remix.svg'}/>
@@ -101,7 +101,7 @@ const PlayerRound: FunctionComponent<PlayerRoundProps> = ( {cardCount, prevRound
             }
           </div>
         }
-        { roundMode === RoundModes.Playing && tricksPlayed === cardCount &&
+        { roundMode === RoundModes.Playing && tricksPlayed === cardCount && bid === tricks && bid > 0 &&
           <div>
             <input placeholder='Bonus' type='number' style={{width: 48}} onChange={bonusEntered}/>
           </div>
