@@ -119,7 +119,7 @@ const PlayerRound: FunctionComponent<PlayerRoundProps> = ( {cardCount, prevRound
             }
           </div>
         }
-        { roundMode === RoundModes.Playing && tricksPlayed === cardCount && bid === tricks && bid > 0 &&
+        { roundMode === RoundModes.Playing && tricksPlayed === cardCount && bid === tricks && 
           <div>
             <input placeholder='Bonus' type='number' style={{width: 48}} min='0' step='10' onChange={bonusEntered}/>
           </div>
