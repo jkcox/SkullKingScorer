@@ -28,7 +28,7 @@ const Sheet: FunctionComponent<SheetProps> = ({players, deletePlayerAction, star
       ReactGA.event({
         'action': 'game_completed', 
         'category': 'game_activity',
-        'label': 'Winners: ' + winningPlayers + ' Score: ' + scores[currentRound][winningPlayers[0]],
+        'label': 'Winners: ' + winningPlayers + ' Scores: ' + scores[currentRound],
       });
     } else {
       setCurrentRound(currentRound+1);
