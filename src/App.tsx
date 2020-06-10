@@ -56,10 +56,10 @@ function App() {
         <Sheet players={players} deletePlayerAction={deletePlayer} startGameAction={startGame} legendaryExpansionInPlay={legendaryExpansionInPlay}></Sheet>
         <br/>
         <div style={{fontSize: 11}}>
-        © 2020 Craig Fisher <a href="https://twitter.com/craigfis">@craigfis</a><br/>
-        <a href="https://github.com/Craigfis/SkullKingScorer">https://github.com/Craigfis/SkullKingScorer</a>
+        © 2020 Craig Fisher <a href="https://twitter.com/craigfis" target='_blank' rel="noopener noreferrer">@craigfis</a><br/>
+        <a href="https://github.com/Craigfis/SkullKingScorer" target='_blank' rel="noopener noreferrer">https://github.com/Craigfis/SkullKingScorer</a>
         <br/>
-        <a href="https://www.grandpabecksgames.com/products-skull-king">What is Skull King?</a>
+        <a href="https://www.grandpabecksgames.com/products-skull-king" target='_blank' rel="noopener noreferrer">What is Skull King?</a>
         </div>
       </div>
     </div>
