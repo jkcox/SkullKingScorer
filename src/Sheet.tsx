@@ -2,7 +2,7 @@ import React, { FunctionComponent, useState, useEffect } from 'react';
 import Round from './Round';
 import './Sheet.css';
 import NumberDictionary from './NumberDictionary';
-import ReactGA from 'react-ga';
+//import ReactGA from 'react-ga';
 
 interface SheetProps {
   players: string[];
@@ -11,7 +11,7 @@ interface SheetProps {
   legendaryExpansionInPlay: boolean;
 }
 
-ReactGA.initialize('UA-166808776-1');
+//ReactGA.initialize('UA-166808776-1');
 
 const Sheet: FunctionComponent<SheetProps> = ({players, deletePlayerAction, startGameAction, legendaryExpansionInPlay}) => {
   let [currentRound, setCurrentRound] = useState(1);
@@ -25,11 +25,11 @@ const Sheet: FunctionComponent<SheetProps> = ({players, deletePlayerAction, star
     scores[currentRound] = roundScores;
     setScores(scores);
     if (currentRound === 10) {
-      ReactGA.event({
-        'action': 'game_completed', 
-        'category': 'game_activity',
-        'label': 'Winners: ' + winningPlayers + ' Scores: ' + scores[currentRound],
-      });
+      // ReactGA.event({
+      //   'action': 'game_completed', 
+      //   'category': 'game_activity',
+      //   'label': 'Winners: ' + winningPlayers + ' Scores: ' + scores[currentRound],
+      // });
     } else {
       setCurrentRound(currentRound+1);
     }
@@ -65,17 +65,20 @@ const Sheet: FunctionComponent<SheetProps> = ({players, deletePlayerAction, star
 
   return (
     <>
-    <table>
+    <table className="table table-striped table-bordered table-sm caption-top ">
+      <caption>Skull King Scoresheet</caption>
       <thead>
-        <tr>
-        <th>Round</th>
+        <tr className="table-primary">
+        <th scope="col">Round</th>
         {
           players.map(p => 
-          <th key={p} title={currentRound === 1 ?'Click here to make this the starting player':''} onClick={() => selectStartingPlayer(p)}>{p}&nbsp; 
+          <th scope="col" key={p} title={currentRound === 1 ?'Click here to make this the starting player':''} onClick={() => selectStartingPlayer(p)}>{p}&nbsp; 
           { currentRound === 1 && <button onClick={() => {deletePlayerAction(p)}}>&#10007;</button>}
           </th>)
         }
+        <th scope="col">Game Control</th>
         </tr>
+        
       </thead>
       <tbody>
     { [1,2,3,4,5,6,7,8,9,10].map(n =>

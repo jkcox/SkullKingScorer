@@ -2,7 +2,7 @@ import React, { FunctionComponent, useState, useEffect } from 'react';
 import PlayerRound from './PlayerRound';
 import RoundModes from './RoundModes';
 import NumberDictionary from './NumberDictionary';
-import ReactGA from 'react-ga';
+//import ReactGA from 'react-ga';
 //import './Round.css';
 
 interface RoundProps {
@@ -16,7 +16,7 @@ interface RoundProps {
   legendaryExpansionInPlay: boolean;
 }
 
-ReactGA.initialize('UA-166808776-1');
+//ReactGA.initialize('UA-166808776-1');
 
 const Round: FunctionComponent<RoundProps> = ( {cardCount, players, prevRoundScores,
   currentRound, roundCompleteAction, winningPlayers, startingPlayer, legendaryExpansionInPlay } ) => {
@@ -30,11 +30,11 @@ const Round: FunctionComponent<RoundProps> = ( {cardCount, players, prevRoundSco
   let startRound = () => {
     setRoundMode(RoundModes.Playing);
     if (currentRound === 1) {
-      ReactGA.event({
-        'action': 'game_started', 
-        'category': 'game_activity',
-        'label': 'Players: ' + players,
-      });
+      // ReactGA.event({
+      //   'action': 'game_started', 
+      //   'category': 'game_activity',
+      //   'label': 'Players: ' + players,
+      // });
     }
   }
 
@@ -95,7 +95,7 @@ const Round: FunctionComponent<RoundProps> = ( {cardCount, players, prevRoundSco
        <td style={{width: 50, border: 'none'}}>
         { roundMode === RoundModes.Bidding && bidsComplete &&
         <>
-        <button onClick={ () => {startRound()}}>Start Round</button>
+        <button type="button" className="btn btn-success" onClick={ () => {startRound()}}>Start Round</button>
         <div style={{width: 100}}>
         { totalTricksBid === cardCount ? 'Bids at par' :
           (totalTricksBid < cardCount ? 'Bids ' + (cardCount - totalTricksBid) + ' under'
@@ -105,11 +105,11 @@ const Round: FunctionComponent<RoundProps> = ( {cardCount, players, prevRoundSco
         </>
         }
         { roundMode === RoundModes.Playing && tricksPlayedCount < cardCount && !krakenPlayed && legendaryExpansionInPlay &&
-          <button onClick={() => { recordKrakenPlayed()}}>Kraken Played</button>
+          <button type="button" className="btn btn-danger" onClick={() => { recordKrakenPlayed()}}>Kraken Played</button>
         }
 
         { roundMode === RoundModes.Playing && tricksPlayedCount === cardCount &&
-          <button onClick={() => { roundComplete()}}>Round done</button>
+          <button type="button" className="btn btn-warning" onClick={() => { roundComplete()}}>Round done</button>
         }
        </td>
     </tr>
