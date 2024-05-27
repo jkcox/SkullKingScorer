@@ -78,16 +78,15 @@ const PlayerRound: FunctionComponent<PlayerRoundProps> = ( {cardCount, prevRound
     setBid(Math.max(0,Math.min(bid + bidChange, cardCount)));
   };
 
-  let backgroundColor =  winning ? 'rgba(255,215,0,0.6)'
-    : ((startingPlayer && roundMode === RoundModes.Bidding) ? 'rgba(25,25,200,0.6)' : '');
+  let backgroundColor =  winning ? 'table-success' : ((startingPlayer && roundMode === RoundModes.Bidding) ? 'table-primary' : '');
   return (
-    <td className='PlayerRound' style={{width: 160, backgroundColor: backgroundColor}} key={player+cardCount}>
+    <td className={`PlayerRound ${backgroundColor}`} key={player+cardCount}>
     {roundMode === RoundModes.Bidding && 
-    <div title={startingPlayer ? 'Starts round' : ''}>
+    <div key={player} title={startingPlayer ? 'Starts round' : ''}>
       {trickNums.map(n => 
       <>
-        <input key={player + n} type='radio' name={player} id={player+n} value={n} onClick={() => {recordPlayerBid(n)}}/>
-        <label key={player + n + 'L'} htmlFor={player + n}>{n}</label>&nbsp;<br></br>
+        <input className="btn-check" key={player + n} type='radio' name={player} id={player+n} value={n} onClick={() => {recordPlayerBid(n)}}/>
+        <label className="btn btn-outline-primary" key={player + n + 'L'} htmlFor={player + n}>{n}</label>&nbsp;<br/>
         </>
       )}
     </div>}
@@ -100,12 +99,12 @@ const PlayerRound: FunctionComponent<PlayerRoundProps> = ( {cardCount, prevRound
         { roundMode === RoundModes.Playing &&
           <div>
             { tricksPlayed < cardCount &&
-             <button onClick={() => {trickPlayed()}}>Add Trick</button>
+             <button className='btn btn-secondary' onClick={() => {trickPlayed()}}>Add Trick</button>
             }
             { legendaryExpansionInPlay && tricks > 0 &&
             <div className='dropdown'>
-              <button className='dropdownbutton'>
-                <img style={{backgroundColor: 'white'}} alt={'Pirate played'} width={16} src={process.env.PUBLIC_URL+'/Skull-And-Crossbones-Remix.svg'}/>
+              <button type="button" className="btn">
+                <img style={{backgroundColor: 'white'}} alt={'Pirate played'} width={32} src={process.env.PUBLIC_URL+'/Skull-And-Crossbones-Remix.svg'}/>
               </button>
               <div className='dropdown-content'>
                 <div>Use Harry the Giant</div>
@@ -130,6 +129,7 @@ const PlayerRound: FunctionComponent<PlayerRoundProps> = ( {cardCount, prevRound
       { bonus > 0 && <div>Bonus: {bonus}</div>}
     <div>Score: {score}</div>
     <div>Total: {score + prevRoundScore}</div>
+    {localStorage.setItem('scores', JSON.stringify(score + prevRoundScore))}
     </>
     }
     </td>
