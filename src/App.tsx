@@ -39,7 +39,6 @@ function App() {
   return (
     <div className="App">
       <div className="App-body">
-      <h1>Ye New Skull King Scoresheet</h1>
         { !newPlayerFieldShown && !gameStarted &&
           <div>
             <input id='legendary_expansion_cb' type='checkbox' checked={legendaryExpansionInPlay}
@@ -55,7 +54,7 @@ function App() {
         }
         <Sheet players={players} deletePlayerAction={deletePlayer} startGameAction={startGame} legendaryExpansionInPlay={legendaryExpansionInPlay}></Sheet>
         <br/>
-        <div style={{fontSize: 11}}>
+        <div className="d-none">
         © 2020 Craig Fisher <a href="https://twitter.com/craigfis" target='_blank' rel="noopener noreferrer">@craigfis</a><br/>
         <a href="https://github.com/Craigfis/SkullKingScorer" target='_blank' rel="noopener noreferrer">https://github.com/Craigfis/SkullKingScorer</a>
         <br/>

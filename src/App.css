@@ -1,11 +1,9 @@
 .App {
   text-align: center;
-  background-color: #4b74c4;
+  background-color: #aaa;
 }
 
 .App-body {
-  background-image: url('http://1.bp.blogspot.com/-oi_NdSsCyuE/T-H50q-_qfI/AAAAAAAAEHk/w22p0h6PGfU/s1600/pirate+(2).jpg');
-  opacity: 0.8;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -13,6 +11,9 @@
   justify-content: center;
   font-size: calc(1px + 2vmin);
   color: white;
+  table {
+    width: 100%;
+  }
 }
 
 a {
