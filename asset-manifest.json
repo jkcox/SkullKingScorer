@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/SkullKingScorer/static/css/main.96e6e547.css",
+    "main.js": "/SkullKingScorer/static/js/main.8462c050.js",
+    "index.html": "/SkullKingScorer/index.html",
+    "main.96e6e547.css.map": "/SkullKingScorer/static/css/main.96e6e547.css.map",
+    "main.8462c050.js.map": "/SkullKingScorer/static/js/main.8462c050.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.96e6e547.css",
+    "static/js/main.8462c050.js"
+  ]
+}
