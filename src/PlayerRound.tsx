@@ -83,12 +83,12 @@ const PlayerRound: FunctionComponent<PlayerRoundProps> = ( {cardCount, prevRound
     <td className={`PlayerRound ${backgroundColor}`} key={player+cardCount}>
     {roundMode === RoundModes.Bidding && 
     <div key={player} title={startingPlayer ? 'Starts round' : ''}>
-      {trickNums.map(n => 
-      <>
-        <input className="btn-check" key={player + n} type='radio' name={player} id={player+n} value={n} onClick={() => {recordPlayerBid(n)}}/>
-        <label className="btn btn-outline-primary" key={player + n + 'L'} htmlFor={player + n}>{n}</label>&nbsp;<br/>
-        </>
-      )}
+      {trickNums.map(n => (
+        <React.Fragment key={player + n}>
+          <input className="btn-check" type='radio' name={player} id={player+n} value={n} onClick={() => {recordPlayerBid(n)}}/>
+          <label className="btn btn-outline-primary" htmlFor={player + n}>{n}</label>&nbsp;<br/>
+        </React.Fragment>
+      ))}
     </div>}
 
     { (roundMode === RoundModes.Completed || roundMode === RoundModes.Playing) &&
@@ -124,14 +124,12 @@ const PlayerRound: FunctionComponent<PlayerRoundProps> = ( {cardCount, prevRound
           </div>
         }
     </>}
-    { roundMode === RoundModes.Completed &&
-    <>
-      { bonus > 0 && <div>Bonus: {bonus}</div>}
-    <div>Score: {score}</div>
-    <div>Total: {score + prevRoundScore}</div>
-    {localStorage.setItem('scores', JSON.stringify(score + prevRoundScore))}
-    </>
-    }
+    { roundMode === RoundModes.Completed && [
+      bonus > 0 ? <div key="bonus">Bonus: {bonus}</div> : null,
+      <div key="score">Score: {score}</div>,
+      <div key="total">Total: {score + prevRoundScore}</div>,
+      (() => { localStorage.setItem('scores', JSON.stringify(score + prevRoundScore)); return null; })()
+    ]}
     </td>
   );
 }
